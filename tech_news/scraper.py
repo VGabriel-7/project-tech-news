@@ -28,10 +28,7 @@ def scrape_updates(html_content):
 # Requisito 3
 def scrape_next_page_link(html_content):
     selector = Selector(text=html_content)
-    next_page_link = selector.css('nav .next::attr(href)').get()
-
-    if next_page_link:
-        return next_page_link
+    return selector.css('nav .next::attr(href)').get()
 
 
 # Requisito 4
