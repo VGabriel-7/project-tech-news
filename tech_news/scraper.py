@@ -22,10 +22,7 @@ def fetch(url):
 # Requisito 2
 def scrape_updates(html_content):
     selector = Selector(text=html_content)
-
-    link_list = selector.css('h2 a::attr(href)').getall()
-
-    return link_list
+    return selector.css('h2 a::attr(href)').getall()
 
 
 # Requisito 3
