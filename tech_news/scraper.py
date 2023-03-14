@@ -1,4 +1,5 @@
 from parsel import Selector
+from bs4 import BeautifulSoup
 import requests
 import time
 
@@ -6,6 +7,7 @@ import time
 # Requisito 1
 def fetch(url):
     try:
+        print(f'Scraping on url: {url}')
         time.sleep(1)
         response = requests.get(
             url,
@@ -33,7 +35,24 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
+    soup = BeautifulSoup(html_content, 'html.parser')
+    url = soup.find('link', {"rel": "canonical"})["href"]
+    title = soup.find(class_='entry-title').text
+    timestamp = soup.find(class_='meta-date').text[:10]
+    writer = soup.find(class_='author').find('a').text
+    reading_time = int(soup.find(class_='meta-reading-time').text[:2])
+    summary = soup.find(class_='entry-content').find('p').text
+    category = soup.find(class_='category-style').find(class_='label').text
+
+    return {
+        "url": url,
+        "title": title.rstrip(),
+        "timestamp": timestamp,
+        "writer": writer,
+        "reading_time": reading_time,
+        "summary": summary.rstrip(),
+        "category": category,
+    }
 
 
 # Requisito 5
